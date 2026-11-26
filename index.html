@@ -265,10 +265,10 @@
           <div class="ask hidden" id="ask-porte">
             <p id="ask-porte-q">Qual é o porte da embarcação?</p>
             <div class="opts">
-              <button class="opt" type="button" data-field="porte" data-value="Até 30 pés (até 9 m)">Até 30 pés (até 9 m)</button>
-              <button class="opt" type="button" data-field="porte" data-value="Até 50 pés (9 a 15 m)">Até 50 pés (9 a 15 m)</button>
-              <button class="opt" type="button" data-field="porte" data-value="Até 70 pés (15 a 21 m)">Até 70 pés (15 a 21 m)</button>
-              <button class="opt" type="button" data-field="porte" data-value="Não sei ainda">Não sei ainda</button>
+              <button class="opt" type="button" data-field="porte" data-value="Até 30 pés">Até 30 pés</button>
+              <button class="opt" type="button" data-field="porte" data-value="Até 50 pés">Até 50 pés</button>
+              <button class="opt" type="button" data-field="porte" data-value="Até 70 pés">Até 70 pés</button>
+              <button class="opt" type="button" data-field="porte" data-value="Eu já calculo meu barco em metros">Eu já calculo meu barco em metros</button>
             </div>
           </div>
         </div>
@@ -465,7 +465,7 @@
       return !answers.voltagem || answers.voltagem.indexOf("Ainda não sei") === 0;
     }
     function sizeUnknown() {
-      return !answers.porte || answers.porte === "Não sei ainda";
+      return !answers.porte;
     }
 
     function recommend() {
@@ -491,7 +491,7 @@
         };
       }
 
-      if (v12 && porte.indexOf("Até 30 pés") === 0) {
+      if (v12 && porte === "Até 30 pés") {
         return {
           modelo: "UL3000 ou UL5000",
           texto: "12 V, nas 3 cores, bronze naval, 2 anos de garantia. O atendimento no WhatsApp confirma o modelo e a quantidade para a popa.",
@@ -499,7 +499,7 @@
         };
       }
 
-      if (v12 && (porte.indexOf("Até 50 pés") === 0 || porte.indexOf("Até 70 pés") === 0)) {
+      if (v12 && (porte === "Até 50 pés" || porte === "Até 70 pés" || porte === "Eu já calculo meu barco em metros")) {
         return {
           modelo: "UL5000 ou UL9000",
           texto: "O UL5000 segue em 12 V direto. O UL9000 é 24 V, ou 12 V com conversor DC-DC. A gente valida a voltagem e a quantidade no WhatsApp.",
