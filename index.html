@@ -136,6 +136,9 @@
     .opts { display: grid; gap: 8px; }
     .opt {
       appearance: none; width: 100%; text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
       border: 1px solid rgba(255,255,255,0.14);
       background: rgba(10,29,55,0.72);
       color: var(--white);
@@ -146,6 +149,29 @@
       backdrop-filter: blur(10px);
     }
     .opt:hover, .opt.is-on { border-color: var(--cyan); background: rgba(0,212,255,0.12); }
+    .opt .color-dot {
+      flex: 0 0 18px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.75);
+      box-shadow: 0 0 8px rgba(255,255,255,0.28);
+    }
+    .opt .color-dot-royal { background: #1652F0; }
+    .opt .color-dot-branco {
+      background: #F0F8FF;
+      border-color: #B8DCFF;
+      box-shadow: 0 0 8px rgba(184, 220, 255, 0.55);
+    }
+    .opt .color-dot-ocean { background: #00B4D8; }
+    .opt .color-dot-dual {
+      background: linear-gradient(135deg, #1652F0 50%, #F0F8FF 50%);
+    }
+    .opt .opt-label {
+      flex: 1 1 auto;
+      min-width: 0;
+      line-height: 1.35;
+    }
     .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 14px; }
     .chip {
       font-size: 11px; color: var(--slate);
@@ -225,11 +251,11 @@
         <div class="content">
           <div class="copy">
             <p class="eyebrow">Iluminação subaquática</p>
-            <h1>Sua embarcação com muito estilo, do píer à noite na baía.</h1>
+            <h1>Mude a dinâmica da sua embarcação ao anoitecer. Transforme seu barco em um aquário natural.</h1>
             <p class="sub">Luz subaquática forte, em bronze naval. Monte a configuração do seu barco em 4 toques.</p>
           </div>
           <div class="ask" id="ask-perfil">
-            <p>Você está escolhendo para qual embarcação?</p>
+            <p>Qual é o seu perfil?</p>
             <div class="opts">
               <button class="opt" type="button" data-field="perfil" data-value="Dono de barco">Dono de barco</button>
               <button class="opt" type="button" data-field="perfil" data-value="Estaleiro ou marina">Estaleiro ou marina</button>
@@ -239,9 +265,9 @@
           <div class="ask hidden" id="ask-porte">
             <p id="ask-porte-q">Qual é o porte da embarcação?</p>
             <div class="opts">
-              <button class="opt" type="button" data-field="porte" data-value="Até 30 pés">Até 30 pés</button>
-              <button class="opt" type="button" data-field="porte" data-value="30 a 45 pés">30 a 45 pés</button>
-              <button class="opt" type="button" data-field="porte" data-value="Acima de 45 pés">Acima de 45 pés</button>
+              <button class="opt" type="button" data-field="porte" data-value="Até 30 pés (até 9 m)">Até 30 pés (até 9 m)</button>
+              <button class="opt" type="button" data-field="porte" data-value="Até 50 pés (9 a 15 m)">Até 50 pés (9 a 15 m)</button>
+              <button class="opt" type="button" data-field="porte" data-value="Até 70 pés (15 a 21 m)">Até 70 pés (15 a 21 m)</button>
               <button class="opt" type="button" data-field="porte" data-value="Não sei ainda">Não sei ainda</button>
             </div>
           </div>
@@ -263,10 +289,10 @@
           <div class="ask">
             <p>Qual efeito você quer ver na água?</p>
             <div class="opts">
-              <button class="opt" type="button" data-field="cor" data-value="Azul Royal">Azul Royal (clássico marcante)</button>
-              <button class="opt" type="button" data-field="cor" data-value="Branco Frio">Branco Frio (clareza e destaque)</button>
-              <button class="opt" type="button" data-field="cor" data-value="Ocean Blue">Ocean Blue (tom de mar aberto)</button>
-              <button class="opt" type="button" data-field="cor" data-value="Dual Color">Dual Color (azul e branco na mesma peça)</button>
+              <button class="opt" type="button" data-field="cor" data-value="Azul Royal"><span class="color-dot color-dot-royal" aria-hidden="true"></span><span class="opt-label">Azul Royal (clássico marcante)</span></button>
+              <button class="opt" type="button" data-field="cor" data-value="Branco Frio"><span class="color-dot color-dot-branco" aria-hidden="true"></span><span class="opt-label">Branco Frio (clareza e destaque)</span></button>
+              <button class="opt" type="button" data-field="cor" data-value="Ocean Blue"><span class="color-dot color-dot-ocean" aria-hidden="true"></span><span class="opt-label">Ocean Blue (tom de mar aberto)</span></button>
+              <button class="opt" type="button" data-field="cor" data-value="Dual Color"><span class="color-dot color-dot-dual" aria-hidden="true"></span><span class="opt-label">Dual Color (azul e branco na mesma peça)</span></button>
             </div>
           </div>
         </div>
@@ -444,7 +470,7 @@
 
     function recommend() {
       var cor = answers.cor;
-      var porte = answers.porte;
+      var porte = answers.porte || "";
       var volt = answers.voltagem;
       var v12 = volt === "12 V";
       var v24 = volt === "24 V";
@@ -465,7 +491,7 @@
         };
       }
 
-      if (v12 && porte === "Até 30 pés") {
+      if (v12 && porte.indexOf("Até 30 pés") === 0) {
         return {
           modelo: "UL3000 ou UL5000",
           texto: "12 V, nas 3 cores, bronze naval, 2 anos de garantia. O atendimento no WhatsApp confirma o modelo e a quantidade para a popa.",
@@ -473,7 +499,7 @@
         };
       }
 
-      if (v12 && (porte === "30 a 45 pés" || porte === "Acima de 45 pés")) {
+      if (v12 && (porte.indexOf("Até 50 pés") === 0 || porte.indexOf("Até 70 pés") === 0)) {
         return {
           modelo: "UL5000 ou UL9000",
           texto: "O UL5000 segue em 12 V direto. O UL9000 é 24 V, ou 12 V com conversor DC-DC. A gente valida a voltagem e a quantidade no WhatsApp.",
