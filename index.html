@@ -30,7 +30,7 @@
       --ok: #25D366;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
+    html, body { height: 100%; color-scheme: dark; }
     body {
       font-family: "Poppins", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
       background: #040b16;
@@ -156,6 +156,10 @@
       border-radius: 50%;
       border: 1px solid rgba(255,255,255,0.75);
       box-shadow: 0 0 8px rgba(255,255,255,0.28);
+      overflow: hidden;
+      forced-color-adjust: none;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
     .opt .color-dot-royal { background: #1652F0; }
     .opt .color-dot-branco {
@@ -164,8 +168,10 @@
       box-shadow: 0 0 8px rgba(184, 220, 255, 0.55);
     }
     .opt .color-dot-ocean { background: #00B4D8; }
-    .opt .color-dot-dual {
-      background: linear-gradient(135deg, #1652F0 50%, #F0F8FF 50%);
+    .opt svg.color-dot-dual {
+      display: block;
+      background: none;
+      flex-shrink: 0;
     }
     .opt .opt-label {
       flex: 1 1 auto;
@@ -292,7 +298,7 @@
               <button class="opt" type="button" data-field="cor" data-value="Azul Royal"><span class="color-dot color-dot-royal" aria-hidden="true"></span><span class="opt-label">Azul Royal (clássico marcante)</span></button>
               <button class="opt" type="button" data-field="cor" data-value="Branco Frio"><span class="color-dot color-dot-branco" aria-hidden="true"></span><span class="opt-label">Branco Frio (clareza e destaque)</span></button>
               <button class="opt" type="button" data-field="cor" data-value="Ocean Blue"><span class="color-dot color-dot-ocean" aria-hidden="true"></span><span class="opt-label">Ocean Blue (tom de mar aberto)</span></button>
-              <button class="opt" type="button" data-field="cor" data-value="Dual Color"><span class="color-dot color-dot-dual" aria-hidden="true"></span><span class="opt-label">Dual Color (azul e branco na mesma peça)</span></button>
+              <button class="opt" type="button" data-field="cor" data-value="Dual Color"><svg class="color-dot color-dot-dual" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><circle cx="9" cy="9" r="9" fill="#FFFFFF"/><path d="M9 0A9 9 0 0 0 9 18Z" fill="#1652F0"/></svg><span class="opt-label">Dual Color (azul e branco na mesma peça)</span></button>
             </div>
           </div>
         </div>
