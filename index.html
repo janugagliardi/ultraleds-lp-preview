@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Ultraleds | Monte a configuração do seu barco</title>
+  <style>
+    @font-face { font-family: "Poppins"; font-style: normal; font-weight: 300; font-display: swap; src: url("assets/fonts/poppins-300-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+    @font-face { font-family: "Poppins"; font-style: normal; font-weight: 300; font-display: swap; src: url("assets/fonts/poppins-300-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+    @font-face { font-family: "Poppins"; font-style: normal; font-weight: 400; font-display: swap; src: url("assets/fonts/poppins-400-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+    @font-face { font-family: "Poppins"; font-style: normal; font-weight: 400; font-display: swap; src: url("assets/fonts/poppins-400-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+    @font-face { font-family: "Poppins"; font-style: normal; font-weight: 500; font-display: swap; src: url("assets/fonts/poppins-500-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+    @font-face { font-family: "Poppins"; font-style: normal; font-weight: 500; font-display: swap; src: url("assets/fonts/poppins-500-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+    @font-face { font-family: "Poppins"; font-style: normal; font-weight: 600; font-display: swap; src: url("assets/fonts/poppins-600-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+    @font-face { font-family: "Poppins"; font-style: normal; font-weight: 600; font-display: swap; src: url("assets/fonts/poppins-600-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+    @font-face { font-family: "Poppins"; font-style: normal; font-weight: 700; font-display: swap; src: url("assets/fonts/poppins-700-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+    @font-face { font-family: "Poppins"; font-style: normal; font-weight: 700; font-display: swap; src: url("assets/fonts/poppins-700-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+    :root {
+      --navy: #061326;
+      --navy-2: #0A1D37;
+      --navy-3: #0E2749;
+      --blue: #0077FF;
+      --cyan: #00D4FF;
+      --white: #F7FBFF;
+      --slate: #C5D2E0;
+      --muted: #8FA3B8;
+      --line: rgba(0, 212, 255, 0.22);
+      --ok: #25D366;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: "Poppins", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      background: #040b16;
+      color: var(--white);
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      min-height: 100dvh;
+      overflow: hidden;
+    }
+    button, input { font-family: inherit; }
+    img, video { display: block; width: 100%; height: 100%; object-fit: cover; }
+    a { color: var(--cyan); }
+
+    .preview-banner {
+      position: sticky; top: 0; z-index: 80;
+      background: linear-gradient(90deg, #04101f, #0c2a4d 50%, #04101f);
+      border-bottom: 1px solid var(--line);
+      color: var(--slate);
+      font-size: 11px; font-weight: 500; letter-spacing: 0.07em;
+      text-transform: uppercase; text-align: center;
+      padding: 8px 14px; line-height: 1.4;
+    }
+    .preview-banner strong { color: var(--cyan); font-weight: 600; }
+
+    .preview-banner { flex: none; }
+    .stage { flex: 1; min-height: 0; display: grid; place-items: center; padding: 16px; width: 100%; }
+    .device {
+      position: relative;
+      width: min(390px, 100%);
+      height: min(844px, 100%);
+      border-radius: 28px;
+      overflow: hidden;
+      background: var(--navy);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.06);
+    }
+    @media (max-width: 720px) {
+      .stage { padding: 0; }
+      .device { width: 100%; height: 100%; border-radius: 0; box-shadow: none; }
+    }
+
+    .bars {
+      position: absolute; top: 10px; left: 10px; right: 10px; z-index: 6;
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px;
+    }
+    .bars i { height: 3px; border-radius: 99px; background: rgba(255,255,255,0.28); overflow: hidden; }
+    .bars i b { display: block; height: 100%; width: 0; background: var(--cyan); }
+    .bars i.is-done b { width: 100%; }
+    .bars i.is-on b { width: 100%; }
+
+    .topbar {
+      position: absolute; top: 22px; left: 10px; right: 10px; z-index: 6;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 6px 4px;
+    }
+    .wordmark { display: inline-flex; align-items: center; gap: 8px; color: #fff; text-decoration: none; }
+    .wordmark svg { width: 22px; height: 22px; }
+    .wordmark span { font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; }
+    .back {
+      appearance: none; border: 0; background: rgba(6,19,38,0.4); color: #fff;
+      width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+      display: grid; place-items: center;
+    }
+    .back[hidden] { display: none; }
+
+    .chapter { position: absolute; inset: 0; display: none; }
+    .chapter.is-on { display: flex; flex-direction: column; }
+    .bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; background: #061326; }
+    .story-bg-video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+    .bg::after {
+      content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background: linear-gradient(180deg, rgba(6,19,38,0.48) 0%, rgba(6,19,38,0.28) 26%, rgba(6,19,38,0.78) 58%, rgba(6,19,38,0.94) 80%, #061326 100%);
+    }
+    .content {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column;
+      height: 100%;
+      padding: 64px 18px 16px;
+      overflow: auto;
+    }
+    .copy { margin-top: 4px; }
+    .eyebrow { color: var(--cyan); font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 8px; }
+    h1, h2 { font-size: 26px; line-height: 1.18; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 8px; }
+    @media (max-height: 780px) {
+      h1, h2 { font-size: 22px; }
+      .sub { font-size: 13px; }
+      .opt { padding: 10px 12px; }
+      .content { padding: 58px 16px 12px; }
+    }
+    .sub { color: var(--slate); font-size: 14px; line-height: 1.5; }
+    .note {
+      margin-top: 12px; padding: 10px 12px; border-radius: 12px;
+      background: rgba(14,39,73,0.72); border: 1px solid var(--line);
+      color: var(--slate); font-size: 12px; line-height: 1.45;
+    }
+    .ask { margin-top: auto; padding-top: 16px; }
+    .ask p { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+    .opts { display: grid; gap: 8px; }
+    .opt {
+      appearance: none; width: 100%; text-align: left;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(10,29,55,0.72);
+      color: var(--white);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 14px; font-weight: 500;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+    }
+    .opt:hover, .opt.is-on { border-color: var(--cyan); background: rgba(0,212,255,0.12); }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 14px; }
+    .chip {
+      font-size: 11px; color: var(--slate);
+      border: 1px solid var(--line); border-radius: 99px;
+      padding: 5px 10px; background: rgba(14,39,73,0.7);
+    }
+    .reco {
+      background: rgba(10,29,55,0.82);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      margin: 8px 0 14px;
+    }
+    .reco h3 { font-size: 20px; font-weight: 600; margin-bottom: 6px; color: var(--cyan); }
+    .reco p { color: var(--slate); font-size: 13px; line-height: 1.5; }
+    .btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; min-height: 48px; border-radius: 999px; border: 0;
+      font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; color: #fff;
+    }
+    .btn-wa { background: var(--ok); color: #062013; margin-bottom: 8px; }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .support { text-align: center; color: var(--muted); font-size: 12px; margin: 4px 0 14px; }
+    .mini { font-size: 13px; font-weight: 600; margin: 6px 0 10px; }
+    label { display: block; font-size: 12px; color: var(--slate); margin: 0 0 4px; }
+    .field { margin-bottom: 8px; }
+    input[type="text"], input[type="tel"] {
+      width: 100%; height: 44px; border-radius: 10px;
+      border: 1px solid rgba(0,212,255,0.22);
+      background: var(--navy-3); color: #fff; padding: 0 12px; font-size: 14px;
+    }
+    .check { display: flex; gap: 8px; align-items: flex-start; font-size: 11px; color: var(--slate); line-height: 1.45; margin: 8px 0 10px; }
+    .check input { margin-top: 2px; accent-color: var(--cyan); flex: none; }
+    .err { display: none; background: rgba(180,40,60,0.2); border: 1px solid rgba(255,120,130,0.35); color: #ffd4d8; border-radius: 10px; padding: 8px 10px; font-size: 12px; margin-bottom: 8px; }
+    .err.is-on { display: block; }
+    .confirm h3 { font-size: 24px; margin-bottom: 6px; }
+    .confirm p { color: var(--slate); font-size: 14px; margin-bottom: 12px; }
+    details.payload {
+      margin-top: 10px; border: 1px dashed var(--line); border-radius: 10px; padding: 8px 10px;
+      color: var(--muted); font-size: 11px;
+    }
+    details.payload pre {
+      white-space: pre-wrap; word-break: break-word;
+      color: var(--slate); font-size: 10px; line-height: 1.4; margin-top: 8px;
+      max-height: 140px; overflow: auto;
+    }
+    .legal { margin-top: 10px; font-size: 10px; color: var(--muted); text-align: center; line-height: 1.5; }
+    .hidden { display: none !important; }
+    #cap5 .content { padding-top: 64px; overflow: auto; }
+    #cap5 h2 { font-size: 24px; }
+  </style>
+</head>
+<body>
+  <div class="preview-banner"><span><strong>PREVIEW PARA APROVAÇÃO INTERNA</strong> · Paleta e tipografia provisórias (aguardando brand guide oficial) · Sem publicação ativa</span></div>
+  <div class="stage">
+    <div class="device" id="device">
+      <div class="bars" aria-hidden="true">
+        <i data-bar="1"><b></b></i><i data-bar="2"><b></b></i><i data-bar="3"><b></b></i><i data-bar="4"><b></b></i><i data-bar="5"><b></b></i>
+      </div>
+      <div class="topbar">
+        <button class="back" id="btn-back" type="button" hidden aria-label="Voltar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <a class="wordmark" href="#cap1">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="#00D4FF" stroke-width="1.5"/><path d="M10 9.2v8.6c0 4.1 2.6 6.7 6 6.7s6-2.6 6-6.7V9.2" fill="none" stroke="#F7FBFF" stroke-width="2.4" stroke-linecap="round"/></svg>
+          <span>Ultraleds</span>
+        </a>
+        <span style="width:32px"></span>
+      </div>
+
+      <section class="chapter is-on" id="cap1" data-chapter="1">
+        <div class="bg">
+          <video class="story-bg-video" autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="assets/cap1-poster.jpg" aria-hidden="true">
+            <source src="assets/cap1.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="content">
+          <div class="copy">
+            <p class="eyebrow">Iluminação subaquática</p>
+            <h1>Sua embarcação com muito estilo, do píer à noite na baía.</h1>
+            <p class="sub">Luz subaquática forte, em bronze naval. Monte a configuração do seu barco em 4 toques.</p>
+          </div>
+          <div class="ask" id="ask-perfil">
+            <p>Você está escolhendo para qual embarcação?</p>
+            <div class="opts">
+              <button class="opt" type="button" data-field="perfil" data-value="Dono de barco">Dono de barco</button>
+              <button class="opt" type="button" data-field="perfil" data-value="Estaleiro ou marina">Estaleiro ou marina</button>
+              <button class="opt" type="button" data-field="perfil" data-value="Instalador">Instalador</button>
+            </div>
+          </div>
+          <div class="ask hidden" id="ask-porte">
+            <p id="ask-porte-q">Qual é o porte da embarcação?</p>
+            <div class="opts">
+              <button class="opt" type="button" data-field="porte" data-value="Até 30 pés">Até 30 pés</button>
+              <button class="opt" type="button" data-field="porte" data-value="30 a 45 pés">30 a 45 pés</button>
+              <button class="opt" type="button" data-field="porte" data-value="Acima de 45 pés">Acima de 45 pés</button>
+              <button class="opt" type="button" data-field="porte" data-value="Não sei ainda">Não sei ainda</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="cap2" data-chapter="2">
+        <div class="bg">
+          <video class="story-bg-video" autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="assets/cap2-poster.jpg" aria-hidden="true">
+            <source src="assets/cap2.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="content">
+          <div class="copy">
+            <p class="eyebrow">A cor do seu mar</p>
+            <h2>Você escolhe a cor do seu mar.</h2>
+            <p class="sub">Cor fixa ou duas cores na mesma peça. Qual combina mais com suas noites a bordo?</p>
+          </div>
+          <div class="ask">
+            <p>Qual efeito você quer ver na água?</p>
+            <div class="opts">
+              <button class="opt" type="button" data-field="cor" data-value="Azul Royal">Azul Royal (clássico marcante)</button>
+              <button class="opt" type="button" data-field="cor" data-value="Branco Frio">Branco Frio (clareza e destaque)</button>
+              <button class="opt" type="button" data-field="cor" data-value="Ocean Blue">Ocean Blue (tom de mar aberto)</button>
+              <button class="opt" type="button" data-field="cor" data-value="Dual Color">Dual Color (azul e branco na mesma peça)</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="cap3" data-chapter="3">
+        <div class="bg">
+          <video class="story-bg-video" autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="assets/cap3-poster.jpg" aria-hidden="true">
+            <source src="assets/cap3.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="content">
+          <div class="copy">
+            <p class="eyebrow">Voltagem</p>
+            <h2>Escolha certa pela voltagem do seu barco.</h2>
+            <p class="sub">A linha Ultraleds atende sistemas 12 V e 24 V sem improviso.</p>
+          </div>
+          <div class="ask">
+            <p>Qual é a voltagem do seu barco?</p>
+            <div class="opts">
+              <button class="opt" type="button" data-field="voltagem" data-value="12 V">12 V</button>
+              <button class="opt" type="button" data-field="voltagem" data-value="24 V">24 V</button>
+              <button class="opt" type="button" data-field="voltagem" data-value="Ainda não sei, quero ajuda para conferir">Ainda não sei, quero ajuda para conferir</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="cap4" data-chapter="4">
+        <div class="bg">
+          <video class="story-bg-video" autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="assets/cap4-poster.jpg" aria-hidden="true">
+            <source src="assets/cap4.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="content">
+          <div class="copy">
+            <p class="eyebrow">Bronze naval</p>
+            <h2>Bronze naval, feito para o mar.</h2>
+            <p class="sub">Perfil ultra compacto, com a melhor hidrodinâmica do mercado, e 2 anos de garantia em toda a linha.</p>
+            <p class="note">A instalação é feita com o barco fora da água, na docagem, por profissional capacitado.</p>
+          </div>
+          <div class="ask">
+            <p>Quando você pretende instalar?</p>
+            <div class="opts">
+              <button class="opt" type="button" data-field="janela" data-value="Já fora da água / este mês">Já fora da água / este mês</button>
+              <button class="opt" type="button" data-field="janela" data-value="30 a 60 dias / próxima revisão">30 a 60 dias / próxima revisão</button>
+              <button class="opt" type="button" data-field="janela" data-value="Só pesquisando">Só pesquisando</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="cap5" data-chapter="5">
+        <div class="bg">
+          <video class="story-bg-video" autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="assets/cap5-poster.jpg" aria-hidden="true">
+            <source src="assets/cap5.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="content">
+          <div id="panel-reco">
+            <p class="eyebrow">Sua indicação</p>
+            <h2>Sua indicação Ultraleds está pronta.</h2>
+            <div class="chips" id="chips"></div>
+            <div class="reco">
+              <h3 id="reco-model"></h3>
+              <p id="reco-text"></p>
+            </div>
+            <a class="btn btn-wa" id="btn-wa" target="_blank" rel="noopener noreferrer">Receber orçamento no WhatsApp</a>
+            <p class="support">Fale direto com a Ultraleds. Sem intermediário.</p>
+            <p class="mini">Prefere que a gente chame você?</p>
+            <form id="form-retorno" novalidate>
+              <div class="err" id="form-erro">Preencha todos os campos obrigatórios e aceite a Política de Privacidade.</div>
+              <div class="field"><label for="nome">Nome</label><input id="nome" name="nome" type="text" autocomplete="name" required></div>
+              <div class="field"><label for="whatsapp">WhatsApp</label><input id="whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" required></div>
+              <div class="field"><label for="cidade">Cidade/UF</label><input id="cidade" name="cidade" type="text" required></div>
+              <label class="check">
+                <input type="checkbox" id="lgpd" name="lgpd">
+                <span>Autorizo a Ultraleds a tratar meus dados pessoais, inclusive nome e WhatsApp, para responder este pedido de orçamento e prestar atendimento comercial, nos termos da <a href="#privacidade">Política de Privacidade</a>.</span>
+              </label>
+              <button class="btn btn-primary" type="submit">Pedir retorno no WhatsApp</button>
+            </form>
+          </div>
+          <div class="confirm hidden" id="panel-ok">
+            <h3>Pedido recebido.</h3>
+            <p>Em breve a Ultraleds retorna no WhatsApp informado.</p>
+            <a class="btn btn-wa" id="btn-wa-ok" target="_blank" rel="noopener noreferrer">Receber orçamento no WhatsApp</a>
+            <details class="payload">
+              <summary>Prévia interna do payload (protótipo, sem envio)</summary>
+              <pre id="payload-json"></pre>
+            </details>
+          </div>
+          <p class="legal" id="privacidade">Ultraleds. Iluminação subaquática.<br>@ultraleds.br | www.ultraleds.com.br | contato@ultraleds.com.br | <a href="#privacidade">Política de Privacidade</a></p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const WHATSAPP_NUMBER = "5511914637319";
+    const LGPD_VERSAO = "v1-2026-11-26";
+    const UTM_KEYS = ["utm_source","utm_medium","utm_campaign","utm_content","utm_term","fbclid","gclid"];
+    const CHAPTERS = [
+      { index: 1, name: "perfil" },
+      { index: 2, name: "cor" },
+      { index: 3, name: "voltagem" },
+      { index: 4, name: "docagem" },
+      { index: 5, name: "recomendacao" }
+    ];
+
+    window.dataLayer = window.dataLayer || [];
+
+    const answers = {
+      perfil: "",
+      porte: "",
+      cor: "",
+      voltagem: "",
+      janela: "",
+      nome: "",
+      whatsapp: "",
+      cidade_uf: ""
+    };
+
+    let chapter = 1;
+    let cap1Step = "perfil";
+    let enteredAt = Date.now();
+    let lastNav = "load";
+
+    function captureUtms() {
+      const params = new URLSearchParams(window.location.search);
+      const found = {};
+      UTM_KEYS.forEach(function (k) {
+        const v = params.get(k);
+        if (v) found[k] = v;
+      });
+      try {
+        const saved = JSON.parse(sessionStorage.getItem("ul_lp_v2_utms") || "{}");
+        const merged = Object.assign({}, saved, found);
+        sessionStorage.setItem("ul_lp_v2_utms", JSON.stringify(merged));
+        return merged;
+      } catch (e) {
+        return found;
+      }
+    }
+    const utms = captureUtms();
+
+    function utmBag() {
+      const bag = {};
+      UTM_KEYS.forEach(function (k) { bag[k] = utms[k] || ""; });
+      return bag;
+    }
+
+    function pushEvent(name, payload) {
+      const ev = Object.assign({ event: name }, utmBag(), payload || {});
+      window.dataLayer.push(ev);
+    }
+
+    function perfilTag() {
+      if (answers.perfil === "Estaleiro ou marina") return "perfil:b2b-estaleiro-marina";
+      if (answers.perfil === "Instalador") return "perfil:b2b-instalador";
+      return "perfil:b2c-proprietario";
+    }
+
+    function tempTag() {
+      if (answers.janela === "Já fora da água / este mês") return "temp:quente-docagem-30d";
+      if (answers.janela === "30 a 60 dias / próxima revisão") return "temp:morna-docagem-90d";
+      return "temp:fria-sem-docagem";
+    }
+
+    function voltageUnknown() {
+      return !answers.voltagem || answers.voltagem.indexOf("Ainda não sei") === 0;
+    }
+    function sizeUnknown() {
+      return !answers.porte || answers.porte === "Não sei ainda";
+    }
+
+    function recommend() {
+      var cor = answers.cor;
+      var porte = answers.porte;
+      var volt = answers.voltagem;
+      var v12 = volt === "12 V";
+      var v24 = volt === "24 V";
+
+      if (cor === "Dual Color") {
+        return {
+          modelo: "UL8000 Dual Color",
+          texto: "Bronze naval, 12 V ou 24 V, com Azul Royal e Branco Frio na mesma peça. 2 anos de garantia.",
+          dcdc: false
+        };
+      }
+
+      if (v24) {
+        return {
+          modelo: "UL9000",
+          texto: "24 V, nas 3 cores, bronze naval, 2 anos de garantia.",
+          dcdc: false
+        };
+      }
+
+      if (v12 && porte === "Até 30 pés") {
+        return {
+          modelo: "UL3000 ou UL5000",
+          texto: "12 V, nas 3 cores, bronze naval, 2 anos de garantia. O atendimento no WhatsApp confirma o modelo e a quantidade para a popa.",
+          dcdc: false
+        };
+      }
+
+      if (v12 && (porte === "30 a 45 pés" || porte === "Acima de 45 pés")) {
+        return {
+          modelo: "UL5000 ou UL9000",
+          texto: "O UL5000 segue em 12 V direto. O UL9000 é 24 V, ou 12 V com conversor DC-DC. A gente valida a voltagem e a quantidade no WhatsApp.",
+          dcdc: true
+        };
+      }
+
+      return {
+        modelo: "UL3000, UL5000, UL8000 Dual Color e UL9000",
+        texto: "Esta é a linha publicada, em bronze naval, com 2 anos de garantia. No WhatsApp a gente confirma a voltagem e a configuração certa para o seu barco, com o perfil e a cor que você já escolheu.",
+        dcdc: false
+      };
+    }
+
+    function waMessage() {
+      var reco = recommend();
+      var msg = "Olá, Ultraleds. Fiz a seleção na página e quero um orçamento. Perfil: " +
+        (answers.perfil || "-") + ". Porte: " + (answers.porte || "-") +
+        ". Cor: " + (answers.cor || "-") + ". Voltagem: " + (answers.voltagem || "-") +
+        ". Previsão de instalação: " + (answers.janela || "-") +
+        ". Modelo indicado: " + reco.modelo + ".";
+      if (utms.utm_source || utms.utm_medium || utms.utm_campaign || utms.utm_content || utms.utm_term || utms.fbclid || utms.gclid) {
+        msg += " [ref: " + (utms.utm_source || "") + "-" + (utms.utm_content || "") + "]";
+      }
+      return msg;
+    }
+
+    function waHref() {
+      return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(waMessage());
+    }
+
+    function buildPayload() {
+      var reco = recommend();
+      return {
+        funil: "Ultraleds [Interno]",
+        etapa: "Lead",
+        tags: ["emp:ultraleds", "gov:interno", "origem:lp-stories-v2", perfilTag(), tempTag()],
+        campos: {
+          perfil: answers.perfil,
+          porte_embarcacao: answers.porte,
+          voltagem: answers.voltagem,
+          cor_desejada: answers.cor,
+          janela_docagem: answers.janela,
+          modelo_recomendado: reco.modelo,
+          requer_conversor_dcdc_12_24v: reco.dcdc,
+          nome: answers.nome,
+          whatsapp: answers.whatsapp,
+          cidade_uf: answers.cidade_uf,
+          lgpd_aceito: true,
+          lgpd_timestamp: new Date().toISOString(),
+          lgpd_versao: LGPD_VERSAO,
+          utm_source: utms.utm_source || "",
+          utm_medium: utms.utm_medium || "",
+          utm_campaign: utms.utm_campaign || "",
+          utm_content: utms.utm_content || "",
+          utm_term: utms.utm_term || "",
+          fbclid: utms.fbclid || "",
+          gclid: utms.gclid || ""
+        }
+      };
+    }
+
+    function setBars() {
+      document.querySelectorAll(".bars i").forEach(function (el) {
+        var n = Number(el.getAttribute("data-bar"));
+        el.classList.toggle("is-done", n < chapter);
+        el.classList.toggle("is-on", n === chapter);
+      });
+    }
+
+    function chapterVideos() {
+      return document.querySelectorAll("video.story-bg-video");
+    }
+
+    function syncChapterVideos() {
+      chapterVideos().forEach(function (vid) {
+        var section = vid.closest(".chapter");
+        var on = section && Number(section.getAttribute("data-chapter")) === chapter;
+        if (on) {
+          vid.muted = true;
+          vid.play().catch(function () {});
+        } else {
+          vid.pause();
+        }
+      });
+    }
+
+    var videosUnlocked = false;
+    function unlockVideosOnFirstTap() {
+      if (videosUnlocked) return;
+      videosUnlocked = true;
+      syncChapterVideos();
+    }
+    document.addEventListener("touchstart", unlockVideosOnFirstTap, { passive: true });
+    document.addEventListener("click", unlockVideosOnFirstTap);
+
+    function showChapter(next, method) {
+      var prev = chapter;
+      var prevName = CHAPTERS[prev - 1].name;
+      var spent = Date.now() - enteredAt;
+      if (next !== prev && method !== "load") {
+        pushEvent("stories_chapter_complete", {
+          chapter_index: prev,
+          chapter_name: prevName,
+          nav_method: method,
+          time_prev_ms: spent
+        });
+      }
+      chapter = next;
+      lastNav = method;
+      enteredAt = Date.now();
+      document.querySelectorAll(".chapter").forEach(function (el) {
+        el.classList.toggle("is-on", Number(el.getAttribute("data-chapter")) === chapter);
+      });
+      setBars();
+      document.getElementById("btn-back").hidden = (chapter === 1 && cap1Step === "perfil");
+      if (chapter === 1) {
+        document.getElementById("ask-perfil").classList.toggle("hidden", cap1Step !== "perfil");
+        document.getElementById("ask-porte").classList.toggle("hidden", cap1Step !== "porte");
+        document.getElementById("ask-porte-q").textContent =
+          (answers.perfil === "Dono de barco")
+            ? "Qual é o porte da embarcação?"
+            : "Qual é o porte mais comum que você atende?";
+      }
+      if (chapter === 5) renderReco();
+      syncChapterVideos();
+      pushEvent("stories_chapter_view", {
+        chapter_index: chapter,
+        chapter_name: CHAPTERS[chapter - 1].name,
+        nav_method: method,
+        time_prev_ms: method === "load" ? 0 : spent
+      });
+    }
+
+    function renderReco() {
+      var reco = recommend();
+      document.getElementById("reco-model").textContent = reco.modelo;
+      document.getElementById("reco-text").textContent = reco.texto;
+      var chips = [
+        "Perfil: " + (answers.perfil || "-"),
+        "Porte: " + (answers.porte || "-"),
+        "Cor: " + (answers.cor || "-"),
+        "Voltagem: " + (answers.voltagem || "-"),
+        "Prazo: " + (answers.janela || "-")
+      ];
+      document.getElementById("chips").innerHTML = chips.map(function (c) {
+        return "<span class=\"chip\">" + c + "</span>";
+      }).join("");
+      var href = waHref();
+      document.getElementById("btn-wa").setAttribute("href", href);
+      document.getElementById("btn-wa-ok").setAttribute("href", href);
+    }
+
+    function onOption(btn) {
+      var field = btn.getAttribute("data-field");
+      var value = btn.getAttribute("data-value");
+      answers[field] = value;
+      btn.parentElement.querySelectorAll(".opt").forEach(function (el) { el.classList.remove("is-on"); });
+      btn.classList.add("is-on");
+      pushEvent("stories_qual_answer", {
+        chapter_index: chapter,
+        chapter_name: CHAPTERS[chapter - 1].name,
+        question: field,
+        answer: value
+      });
+
+      if (field === "perfil") {
+        cap1Step = "porte";
+        showChapter(1, "option");
+        return;
+      }
+      if (field === "porte") showChapter(2, "option");
+      if (field === "cor") showChapter(3, "option");
+      if (field === "voltagem") showChapter(4, "option");
+      if (field === "janela") showChapter(5, "option");
+    }
+
+    document.getElementById("btn-back").addEventListener("click", function () {
+      if (chapter === 1 && cap1Step === "porte") {
+        cap1Step = "perfil";
+        showChapter(1, "back");
+        return;
+      }
+      if (chapter > 1) {
+        if (chapter === 2) cap1Step = "porte";
+        showChapter(chapter - 1, "back");
+      }
+    });
+
+    document.querySelectorAll(".opt").forEach(function (btn) {
+      btn.addEventListener("click", function () { onOption(btn); });
+    });
+
+    function onWaClick(ev) {
+      ev.currentTarget.setAttribute("href", waHref());
+      pushEvent("stories_whatsapp_click", {
+        chapter_index: 5,
+        chapter_name: "recomendacao",
+        modelo_recomendado: recommend().modelo,
+        perfil: answers.perfil,
+        porte_embarcacao: answers.porte,
+        cor_desejada: answers.cor,
+        voltagem: answers.voltagem,
+        janela_docagem: answers.janela
+      });
+    }
+    document.getElementById("btn-wa").addEventListener("click", onWaClick);
+    document.getElementById("btn-wa-ok").addEventListener("click", onWaClick);
+
+    document.getElementById("form-retorno").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var nome = document.getElementById("nome").value.trim();
+      var wa = document.getElementById("whatsapp").value.trim();
+      var cidade = document.getElementById("cidade").value.trim();
+      var lgpd = document.getElementById("lgpd").checked;
+      var err = document.getElementById("form-erro");
+      err.classList.remove("is-on");
+      if (!nome || !wa || !cidade || !lgpd) {
+        err.classList.add("is-on");
+        return;
+      }
+      answers.nome = nome;
+      answers.whatsapp = wa;
+      answers.cidade_uf = cidade;
+      var payload = buildPayload();
+      document.getElementById("payload-json").textContent = JSON.stringify(payload, null, 2);
+      document.getElementById("panel-reco").classList.add("hidden");
+      document.getElementById("panel-ok").classList.remove("hidden");
+      document.getElementById("btn-wa-ok").setAttribute("href", waHref());
+      pushEvent("stories_form_submit", payload);
+    });
+
+    pushEvent("stories_lp_view", { path: window.location.pathname });
+    showChapter(1, "load");
+  </script>
+</body>
+</html>
