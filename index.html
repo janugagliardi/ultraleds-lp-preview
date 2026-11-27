@@ -86,9 +86,14 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 6px 4px;
     }
-    .wordmark { display: inline-flex; align-items: center; gap: 8px; color: #fff; text-decoration: none; }
-    .wordmark svg { width: 22px; height: 22px; }
-    .wordmark span { font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; }
+    .wordmark { display: inline-flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; }
+    .wordmark-logo {
+      display: block;
+      height: 46px;
+      width: auto;
+      max-width: 132px;
+      object-fit: contain;
+    }
     .back {
       appearance: none; border: 0; background: rgba(6,19,38,0.4); color: #fff;
       width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
@@ -126,7 +131,7 @@
       position: relative; z-index: 2;
       display: flex; flex-direction: column;
       height: 100%;
-      padding: 64px 18px 16px;
+      padding: 80px 18px 16px;
       overflow: auto;
     }
     .copy { margin-top: 4px; }
@@ -136,7 +141,8 @@
       h1, h2 { font-size: 22px; }
       .sub { font-size: 13px; }
       .opt { padding: 10px 12px; }
-      .content { padding: 58px 16px 12px; }
+      .content { padding: 72px 16px 12px; }
+      .wordmark-logo { height: 40px; }
     }
     .sub { color: var(--slate); font-size: 14px; line-height: 1.5; }
     .note {
@@ -239,12 +245,12 @@
     }
     .legal { margin-top: 10px; font-size: 10px; color: var(--muted); text-align: center; line-height: 1.5; }
     .hidden { display: none !important; }
-    #cap5 .content { padding-top: 64px; overflow: auto; }
+    #cap5 .content { padding-top: 80px; overflow: auto; }
     #cap5 h2 { font-size: 24px; }
   </style>
 </head>
 <body>
-  <audio id="bgMusic" src="assets/bg-music.mp3?v=house-vibez" loop preload="auto" playsinline></audio>
+  <audio id="bgMusic" src="assets/bg-music.mp3?v=house-vibez" autoplay loop preload="auto" playsinline></audio>
   <div class="preview-banner"><span><strong>PREVIEW PARA APROVAÇÃO INTERNA</strong> · Paleta e tipografia provisórias (aguardando brand guide oficial) · Sem publicação ativa</span></div>
   <div class="stage">
     <div class="device" id="device">
@@ -255,9 +261,8 @@
         <button class="back" id="btn-back" type="button" hidden aria-label="Voltar">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <a class="wordmark" href="#cap1">
-          <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="#00D4FF" stroke-width="1.5"/><path d="M10 9.2v8.6c0 4.1 2.6 6.7 6 6.7s6-2.6 6-6.7V9.2" fill="none" stroke="#F7FBFF" stroke-width="2.4" stroke-linecap="round"/></svg>
-          <span>Ultraleds</span>
+        <a class="wordmark" href="#cap1" aria-label="Ultraleds">
+          <img class="wordmark-logo" src="assets/logo-ultraleds.png" alt="Ultraleds" width="1000" height="652">
         </a>
         <button class="sound" id="btn-sound" type="button" aria-label="Ativar ou silenciar música" aria-pressed="false" title="Som">
           <svg class="icon-sound-on" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -814,6 +819,7 @@
     var musicStarted = false;
     var wasPlayingOnHide = false;
     var fadeTimer = null;
+    var UNLOCK_EVENTS = ["pointerdown", "touchstart", "touchend", "click", "keydown"];
 
     function updateSoundButton() {
       var playing = musicStarted && !userMuted && bgMusic && !bgMusic.paused;
@@ -843,21 +849,41 @@
       }, 16);
     }
 
+    function onUnlockGesture(e) {
+      if (e.target && e.target.closest && e.target.closest("#btn-sound")) return;
+      if (!musicStarted && !userMuted) startMusic();
+    }
+
+    function addUnlockListeners() {
+      UNLOCK_EVENTS.forEach(function (type) {
+        document.addEventListener(type, onUnlockGesture, true);
+      });
+    }
+
+    function removeUnlockListeners() {
+      UNLOCK_EVENTS.forEach(function (type) {
+        document.removeEventListener(type, onUnlockGesture, true);
+      });
+    }
+
     function startMusic() {
       if (userMuted || !bgMusic) return;
       bgMusic.loop = true;
+      bgMusic.volume = MUSIC_VOL;
       var playPromise = bgMusic.play();
       if (playPromise && playPromise.then) {
         playPromise.then(function () {
           musicStarted = true;
-          fadeTo(MUSIC_VOL, 600);
+          bgMusic.volume = MUSIC_VOL;
+          removeUnlockListeners();
           updateSoundButton();
         }).catch(function () {
           updateSoundButton();
         });
       } else {
         musicStarted = true;
-        fadeTo(MUSIC_VOL, 600);
+        bgMusic.volume = MUSIC_VOL;
+        removeUnlockListeners();
         updateSoundButton();
       }
     }
@@ -872,13 +898,14 @@
 
     function tryAutoplay() {
       if (!bgMusic || userMuted) return;
-      bgMusic.volume = 0;
       bgMusic.loop = true;
+      bgMusic.volume = MUSIC_VOL;
       var playPromise = bgMusic.play();
       if (playPromise && playPromise.then) {
         playPromise.then(function () {
           musicStarted = true;
-          fadeTo(MUSIC_VOL, 600);
+          bgMusic.volume = MUSIC_VOL;
+          removeUnlockListeners();
           updateSoundButton();
         }).catch(function () {
           updateSoundButton();
@@ -886,10 +913,7 @@
       }
     }
 
-    document.addEventListener("pointerdown", function (e) {
-      if (e.target && e.target.closest && e.target.closest("#btn-sound")) return;
-      if (!musicStarted && !userMuted) startMusic();
-    }, true);
+    addUnlockListeners();
 
     btnSound.addEventListener("click", function (e) {
       e.stopPropagation();
