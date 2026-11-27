@@ -393,7 +393,11 @@
             <a class="btn btn-wa" id="btn-wa" target="_blank" rel="noopener noreferrer">Receber orçamento no WhatsApp</a>
             <p class="support">Fale direto com a Ultraleds. Sem intermediário.</p>
             <p class="mini">Prefere que a gente chame você?</p>
-            <form id="form-retorno" novalidate>
+                        <form id="form-retorno" novalidate>
+              <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden">
+                <label for="website">Não preencha este campo</label>
+                <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+              </div>
               <div class="err" id="form-erro">Preencha todos os campos obrigatórios e aceite a Política de Privacidade.</div>
               <div class="field"><label for="nome">Nome</label><input id="nome" name="nome" type="text" autocomplete="name" required></div>
               <div class="field"><label for="whatsapp">WhatsApp</label><input id="whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" required></div>
@@ -409,10 +413,6 @@
             <h3>Pedido recebido.</h3>
             <p>Em breve a Ultraleds retorna no WhatsApp informado.</p>
             <a class="btn btn-wa" id="btn-wa-ok" target="_blank" rel="noopener noreferrer">Receber orçamento no WhatsApp</a>
-            <details class="payload">
-              <summary>Prévia interna do payload (protótipo, sem envio)</summary>
-              <pre id="payload-json"></pre>
-            </details>
           </div>
           <p class="legal" id="privacidade">Ultraleds. Iluminação subaquática.<br>@ultraleds.br | www.ultraleds.com.br | contato@ultraleds.com.br | <a href="#privacidade">Política de Privacidade</a></p>
         </div>
@@ -739,12 +739,46 @@
     document.getElementById("btn-wa").addEventListener("click", onWaClick);
     document.getElementById("btn-wa-ok").addEventListener("click", onWaClick);
 
+    var LEADS_ENDPOINT = "https://ultraleds-datacrazy-proxy.janugagliardi.workers.dev/lead";
+    var SHOW_PAYLOAD_PREVIEW = false;
+    var leadAlreadySent = false;
+
+    function sendLeadToCrm(payload) {
+      if (!LEADS_ENDPOINT || leadAlreadySent || typeof window.fetch !== "function") return;
+      leadAlreadySent = true;
+      try {
+        window.fetch(LEADS_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+          mode: "cors",
+          credentials: "omit",
+          keepalive: true
+        })
+          .then(function (res) {
+            pushEvent("stories_lead_crm", { crm_status: String(res.status) });
+          })
+          .catch(function () {
+            pushEvent("stories_lead_crm", { crm_status: "erro_ou_timeout" });
+          });
+      } catch (e) { /* visitante segue normalmente */ }
+    }
+
+    function payloadSemPii(payload) {
+      var campos = Object.assign({}, payload.campos);
+      delete campos.nome;
+      delete campos.whatsapp;
+      delete campos.cidade_uf;
+      return { funil: payload.funil, etapa: payload.etapa, tags: payload.tags, campos: campos };
+    }
+
     document.getElementById("form-retorno").addEventListener("submit", function (e) {
       e.preventDefault();
       var nome = document.getElementById("nome").value.trim();
       var wa = document.getElementById("whatsapp").value.trim();
       var cidade = document.getElementById("cidade").value.trim();
       var lgpd = document.getElementById("lgpd").checked;
+      var hpEl = document.getElementById("website");
       var err = document.getElementById("form-erro");
       err.classList.remove("is-on");
       if (!nome || !wa || !cidade || !lgpd) {
@@ -754,12 +788,23 @@
       answers.nome = nome;
       answers.whatsapp = wa;
       answers.cidade_uf = cidade;
+
       var payload = buildPayload();
-      document.getElementById("payload-json").textContent = JSON.stringify(payload, null, 2);
+      payload.website = hpEl ? hpEl.value : "";
+
+      if (SHOW_PAYLOAD_PREVIEW) {
+        var previewJson = document.getElementById("payload-json");
+        if (previewJson) previewJson.textContent = JSON.stringify(payload, null, 2);
+      } else {
+        var preview = document.querySelector("#panel-ok details.payload");
+        if (preview) preview.hidden = true;
+      }
       document.getElementById("panel-reco").classList.add("hidden");
       document.getElementById("panel-ok").classList.remove("hidden");
       document.getElementById("btn-wa-ok").setAttribute("href", waHref());
-      pushEvent("stories_form_submit", payload);
+
+      sendLeadToCrm(payload);
+      pushEvent("stories_form_submit", payloadSemPii(payload));
     });
 
     var bgMusic = document.getElementById("bgMusic");
