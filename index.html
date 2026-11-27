@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex, nofollow">
   <title>Ultraleds | Monte a configuração do seu barco</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23061326'/%3E%3Ccircle cx='16' cy='13' r='4.5' fill='%2300D4FF'/%3E%3Cpath d='M8 22.5c2.4-3.2 5.2-4.6 8-4.6s5.6 1.4 8 4.6' fill='none' stroke='%2300D4FF' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
   <style>
     @font-face { font-family: "Poppins"; font-style: normal; font-weight: 300; font-display: swap; src: url("assets/fonts/poppins-300-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
     @font-face { font-family: "Poppins"; font-style: normal; font-weight: 300; font-display: swap; src: url("assets/fonts/poppins-300-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
@@ -247,6 +248,51 @@
     .hidden { display: none !important; }
     #cap5 .content { padding-top: 80px; overflow: auto; }
     #cap5 h2 { font-size: 24px; }
+    .btn-primary:disabled { opacity: 0.7; cursor: wait; }
+    .btn-wa.is-highlight {
+      box-shadow: 0 0 0 2px #062013, 0 0 0 5px var(--ok);
+      outline: none;
+    }
+    button.privacy-open, a.privacy-open {
+      appearance: none; background: none; border: 0; padding: 0;
+      color: var(--cyan); font: inherit; cursor: pointer;
+      text-decoration: underline;
+    }
+    .privacy-modal {
+      display: none;
+      position: absolute; inset: 0; z-index: 40;
+    }
+    .privacy-modal.is-open { display: block; }
+    .privacy-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(4, 11, 22, 0.72);
+    }
+    .privacy-dialog {
+      position: absolute; left: 16px; right: 16px; top: 64px; bottom: 16px;
+      background: var(--navy-2);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px 18px 18px;
+      overflow: auto;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+    }
+    .privacy-close {
+      appearance: none; position: absolute; top: 10px; right: 10px;
+      width: 36px; height: 36px; border: 0; border-radius: 50%;
+      background: rgba(255,255,255,0.08); color: #fff;
+      font-size: 22px; line-height: 1; cursor: pointer;
+    }
+    .privacy-dialog h2 {
+      font-size: 20px; margin: 0 36px 12px 0;
+    }
+    .privacy-dialog h3 {
+      font-size: 13px; color: var(--cyan); font-weight: 600;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      margin: 14px 0 6px;
+    }
+    .privacy-dialog p {
+      color: var(--slate); font-size: 13px; line-height: 1.55; margin-bottom: 8px;
+    }
   </style>
 </head>
 <body>
@@ -287,7 +333,7 @@
           <div class="copy">
             <p class="eyebrow">Iluminação subaquática</p>
             <h1>Mude a dinâmica da sua embarcação ao anoitecer. Transforme seu barco em um aquário natural.</h1>
-            <p class="sub">Luz subaquática forte, em bronze naval. Monte a configuração do seu barco em 4 toques.</p>
+            <p class="sub">Luz subaquática forte, em bronze naval. Monte a configuração do seu barco em 5 toques.</p>
           </div>
           <div class="ask" id="ask-perfil">
             <p>Qual é o seu perfil?</p>
@@ -409,9 +455,10 @@
               <div class="field"><label for="cidade">Cidade/UF</label><input id="cidade" name="cidade" type="text" required></div>
               <label class="check">
                 <input type="checkbox" id="lgpd" name="lgpd">
-                <span>Autorizo a Ultraleds a tratar meus dados pessoais, inclusive nome e WhatsApp, para responder este pedido de orçamento e prestar atendimento comercial, nos termos da <a href="#privacidade">Política de Privacidade</a>.</span>
+                <span>Autorizo a Ultraleds a tratar meus dados pessoais, inclusive nome e WhatsApp, para responder este pedido de orçamento e prestar atendimento comercial, nos termos da <button type="button" class="privacy-open" data-open-privacy>Política de Privacidade</button>.</span>
               </label>
-              <button class="btn btn-primary" type="submit">Pedir retorno no WhatsApp</button>
+              <button class="btn btn-primary" type="submit" id="btn-retorno">Pedir retorno no WhatsApp</button>
+              <a class="btn btn-wa hidden" id="btn-wa-fallback" target="_blank" rel="noopener noreferrer">Receber orçamento no WhatsApp</a>
             </form>
           </div>
           <div class="confirm hidden" id="panel-ok">
@@ -419,15 +466,35 @@
             <p>Em breve a Ultraleds retorna no WhatsApp informado.</p>
             <a class="btn btn-wa" id="btn-wa-ok" target="_blank" rel="noopener noreferrer">Receber orçamento no WhatsApp</a>
           </div>
-          <p class="legal" id="privacidade">Ultraleds. Iluminação subaquática.<br>@ultraleds.br | www.ultraleds.com.br | contato@ultraleds.com.br | <a href="#privacidade">Política de Privacidade</a></p>
+          <p class="legal">Ultraleds. Iluminação subaquática.<br>@ultraleds.br | www.ultraleds.com.br | contato@ultraleds.com.br | <button type="button" class="privacy-open" data-open-privacy>Política de Privacidade</button></p>
         </div>
       </section>
+
+      <div class="privacy-modal" id="privacy-modal" hidden>
+        <div class="privacy-backdrop" data-close-privacy></div>
+        <div class="privacy-dialog" role="dialog" aria-modal="true" aria-labelledby="privacy-title">
+          <button type="button" class="privacy-close" data-close-privacy aria-label="Fechar">&times;</button>
+          <h2 id="privacy-title">Política de Privacidade</h2>
+          <h3>Controladora</h3>
+          <p>A Ultraleds é a controladora dos dados pessoais coletados neste formulário.</p>
+          <h3>Finalidade</h3>
+          <p>Seus dados (nome, WhatsApp e cidade/UF, além das respostas do quiz de configuração) são usados exclusivamente para atendimento comercial e elaboração de orçamento de iluminação subaquática, e para retorno no WhatsApp informado.</p>
+          <h3>Base legal</h3>
+          <p>O tratamento se apoia no seu consentimento, dado ao marcar a caixa de autorização neste formulário, nos termos da Lei Geral de Proteção de Dados (Lei n.º 13.709/2018).</p>
+          <h3>Compartilhamento e retenção</h3>
+          <p>Os dados não são usados para outras marcas ou finalidades. Podem ser tratados por sistemas de atendimento necessários para responder o seu pedido e são guardados pelo tempo necessário ao atendimento comercial e às obrigações legais.</p>
+          <h3>Direitos do titular</h3>
+          <p>Você pode solicitar confirmação de tratamento, acesso, correção, anonimização, portabilidade, informação sobre compartilhamentos e revogação do consentimento. Para exercer esses direitos, escreva para <a href="mailto:contato@ultraleds.com.br">contato@ultraleds.com.br</a>.</p>
+          <h3>Contato</h3>
+          <p>Ultraleds. E-mail: <a href="mailto:contato@ultraleds.com.br">contato@ultraleds.com.br</a>. Site: <a href="https://www.ultraleds.com.br" target="_blank" rel="noopener noreferrer">www.ultraleds.com.br</a>.</p>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
     const WHATSAPP_NUMBER = "5511914637319";
-    const LGPD_VERSAO = "v1-2026-11-26";
+    const LGPD_VERSAO = "v1-2026-11-27";
     const UTM_KEYS = ["utm_source","utm_medium","utm_campaign","utm_content","utm_term","fbclid","gclid"];
     const CHAPTERS = [
       { index: 1, name: "perfil" },
@@ -496,6 +563,13 @@
       return "temp:fria-sem-docagem";
     }
 
+    function rotaTags() {
+      if (answers.perfil === "Estaleiro ou marina" || answers.porte === "Eu já calculo meu barco em metros") {
+        return ["rota:closer"];
+      }
+      return [];
+    }
+
     function voltageUnknown() {
       return !answers.voltagem || answers.voltagem.indexOf("Ainda não sei") === 0;
     }
@@ -511,9 +585,10 @@
       var v24 = volt === "24 V";
 
       if (cor === "Dual Color") {
+        var voltTxt = (v12 || v24) ? volt : "12 V ou 24 V";
         return {
           modelo: "UL8000 Dual Color",
-          texto: "Bronze naval, 12 V ou 24 V, com Azul Royal e Branco Frio na mesma peça. 2 anos de garantia.",
+          texto: "Bronze naval, " + voltTxt + ", com Azul Royal e Branco Frio na mesma peça. 2 anos de garantia.",
           dcdc: false
         };
       }
@@ -549,21 +624,30 @@
       };
     }
 
-    function waMessage() {
+    function waMessage(includeContact) {
       var reco = recommend();
-      var msg = "Olá, Ultraleds. Fiz a seleção na página e quero um orçamento. Perfil: " +
-        (answers.perfil || "-") + ". Porte: " + (answers.porte || "-") +
-        ". Cor: " + (answers.cor || "-") + ". Voltagem: " + (answers.voltagem || "-") +
+      var msg = "Olá, Ultraleds. Fiz a seleção na página e quero um orçamento.";
+      if (includeContact) {
+        if (answers.nome) msg += " Nome: " + answers.nome + ".";
+        if (answers.cidade_uf) msg += " Cidade/UF: " + answers.cidade_uf + ".";
+      }
+      msg += " Perfil: " + (answers.perfil || "-") +
+        ". Porte: " + (answers.porte || "-") +
+        ". Cor: " + (answers.cor || "-") +
+        ". Voltagem: " + (answers.voltagem || "-") +
         ". Previsão de instalação: " + (answers.janela || "-") +
         ". Modelo indicado: " + reco.modelo + ".";
+      if (includeContact && reco.dcdc) {
+        msg += " Pode ser necessário conversor DC-DC 12V para 24V.";
+      }
       if (utms.utm_source || utms.utm_medium || utms.utm_campaign || utms.utm_content || utms.utm_term || utms.fbclid || utms.gclid) {
         msg += " [ref: " + (utms.utm_source || "") + "-" + (utms.utm_content || "") + "]";
       }
       return msg;
     }
 
-    function waHref() {
-      return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(waMessage());
+    function waHref(includeContact) {
+      return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(waMessage(includeContact));
     }
 
     function buildPayload() {
@@ -571,7 +655,7 @@
       return {
         funil: "Ultraleds [Interno]",
         etapa: "Lead",
-        tags: ["emp:ultraleds", "gov:interno", "origem:lp-stories-v2", perfilTag(), tempTag()],
+        tags: ["emp:ultraleds", "gov:interno", "origem:lp-stories-v2", perfilTag(), tempTag()].concat(rotaTags()),
         campos: {
           perfil: answers.perfil,
           porte_embarcacao: answers.porte,
@@ -689,6 +773,7 @@
     }
 
     function onOption(btn) {
+      if (!musicStarted && !userMuted) startMusic();
       var field = btn.getAttribute("data-field");
       var value = btn.getAttribute("data-value");
       answers[field] = value;
@@ -729,7 +814,8 @@
     });
 
     function onWaClick(ev) {
-      ev.currentTarget.setAttribute("href", waHref());
+      var includeContact = ev.currentTarget.id === "btn-wa-ok" || ev.currentTarget.id === "btn-wa-fallback";
+      ev.currentTarget.setAttribute("href", waHref(includeContact));
       pushEvent("stories_whatsapp_click", {
         chapter_index: 5,
         chapter_name: "recomendacao",
@@ -743,30 +829,88 @@
     }
     document.getElementById("btn-wa").addEventListener("click", onWaClick);
     document.getElementById("btn-wa-ok").addEventListener("click", onWaClick);
+    document.getElementById("btn-wa-fallback").addEventListener("click", onWaClick);
 
     var LEADS_ENDPOINT = "https://ultraleds-datacrazy-proxy.janugagliardi.workers.dev/lead";
     var SHOW_PAYLOAD_PREVIEW = false;
     var leadAlreadySent = false;
+    var CRM_TIMEOUT_MS = 10000;
+    var waInput = document.getElementById("whatsapp");
+    var formErro = document.getElementById("form-erro");
+    var btnRetorno = document.getElementById("btn-retorno");
+    var btnWaFallback = document.getElementById("btn-wa-fallback");
+    var FORM_ERRO_PADRAO = "Preencha todos os campos obrigatórios e aceite a Política de Privacidade.";
+    var FORM_ERRO_WHATSAPP = "Informe um WhatsApp completo, com DDD e número.";
+    var FORM_ERRO_CRM = "Não conseguimos registrar agora. Clique em Receber orçamento no WhatsApp abaixo para falar direto com a equipe.";
+
+    function phoneDigits(value) {
+      var d = String(value || "").replace(/\D/g, "");
+      if (d.indexOf("55") === 0 && d.length > 11) d = d.slice(2);
+      return d.slice(0, 11);
+    }
+
+    function formatPhoneBR(value) {
+      var d = phoneDigits(value);
+      if (!d) return "";
+      if (d.length <= 2) return "(" + d;
+      var ddd = d.slice(0, 2);
+      var rest = d.slice(2);
+      if (d.length <= 6) return "(" + ddd + ") " + rest;
+      if (d.length <= 10) return "(" + ddd + ") " + rest.slice(0, 4) + (rest.length > 4 ? "-" + rest.slice(4) : "");
+      return "(" + ddd + ") " + rest.slice(0, 5) + "-" + rest.slice(5);
+    }
+
+    waInput.addEventListener("input", function () {
+      waInput.value = formatPhoneBR(waInput.value);
+    });
+    waInput.addEventListener("blur", function () {
+      if (waInput.value) waInput.value = formatPhoneBR(waInput.value);
+    });
+
+    function showFormError(msg) {
+      formErro.textContent = msg;
+      formErro.classList.add("is-on");
+    }
+
+    function hideFormError() {
+      formErro.classList.remove("is-on");
+      formErro.textContent = FORM_ERRO_PADRAO;
+    }
 
     function sendLeadToCrm(payload) {
-      if (!LEADS_ENDPOINT || leadAlreadySent || typeof window.fetch !== "function") return;
-      leadAlreadySent = true;
-      try {
-        window.fetch(LEADS_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-          mode: "cors",
-          credentials: "omit",
-          keepalive: true
-        })
-          .then(function (res) {
-            pushEvent("stories_lead_crm", { crm_status: String(res.status) });
+      return new Promise(function (resolve) {
+        if (!LEADS_ENDPOINT || typeof window.fetch !== "function") {
+          resolve({ ok: false, reason: "no_endpoint" });
+          return;
+        }
+        var ctrl = window.AbortController ? new AbortController() : null;
+        var timer = window.setTimeout(function () {
+          if (ctrl) ctrl.abort();
+        }, CRM_TIMEOUT_MS);
+        try {
+          window.fetch(LEADS_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+            mode: "cors",
+            credentials: "omit",
+            signal: ctrl ? ctrl.signal : undefined
           })
-          .catch(function () {
-            pushEvent("stories_lead_crm", { crm_status: "erro_ou_timeout" });
-          });
-      } catch (e) { /* visitante segue normalmente */ }
+            .then(function (res) {
+              window.clearTimeout(timer);
+              pushEvent("stories_lead_crm", { crm_status: String(res.status) });
+              resolve({ ok: !!res.ok, status: res.status });
+            })
+            .catch(function () {
+              window.clearTimeout(timer);
+              pushEvent("stories_lead_crm", { crm_status: "erro_ou_timeout" });
+              resolve({ ok: false, reason: "erro_ou_timeout" });
+            });
+        } catch (e) {
+          window.clearTimeout(timer);
+          resolve({ ok: false, reason: "erro_ou_timeout" });
+        }
+      });
     }
 
     function payloadSemPii(payload) {
@@ -777,26 +921,7 @@
       return { funil: payload.funil, etapa: payload.etapa, tags: payload.tags, campos: campos };
     }
 
-    document.getElementById("form-retorno").addEventListener("submit", function (e) {
-      e.preventDefault();
-      var nome = document.getElementById("nome").value.trim();
-      var wa = document.getElementById("whatsapp").value.trim();
-      var cidade = document.getElementById("cidade").value.trim();
-      var lgpd = document.getElementById("lgpd").checked;
-      var hpEl = document.getElementById("website");
-      var err = document.getElementById("form-erro");
-      err.classList.remove("is-on");
-      if (!nome || !wa || !cidade || !lgpd) {
-        err.classList.add("is-on");
-        return;
-      }
-      answers.nome = nome;
-      answers.whatsapp = wa;
-      answers.cidade_uf = cidade;
-
-      var payload = buildPayload();
-      payload.website = hpEl ? hpEl.value : "";
-
+    function revealConfirmation(payload) {
       if (SHOW_PAYLOAD_PREVIEW) {
         var previewJson = document.getElementById("payload-json");
         if (previewJson) previewJson.textContent = JSON.stringify(payload, null, 2);
@@ -806,11 +931,89 @@
       }
       document.getElementById("panel-reco").classList.add("hidden");
       document.getElementById("panel-ok").classList.remove("hidden");
-      document.getElementById("btn-wa-ok").setAttribute("href", waHref());
+      document.getElementById("btn-wa-ok").setAttribute("href", waHref(true));
+    }
 
-      sendLeadToCrm(payload);
-      pushEvent("stories_form_submit", payloadSemPii(payload));
+    document.getElementById("form-retorno").addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (leadAlreadySent) return;
+      var nome = document.getElementById("nome").value.trim();
+      var wa = formatPhoneBR(document.getElementById("whatsapp").value.trim());
+      document.getElementById("whatsapp").value = wa;
+      var cidade = document.getElementById("cidade").value.trim();
+      var lgpd = document.getElementById("lgpd").checked;
+      var hpEl = document.getElementById("website");
+      hideFormError();
+      btnWaFallback.classList.add("hidden");
+      btnWaFallback.classList.remove("is-highlight");
+      if (!nome || !wa || !cidade || !lgpd) {
+        showFormError(FORM_ERRO_PADRAO);
+        return;
+      }
+      if (phoneDigits(wa).length < 10) {
+        showFormError(FORM_ERRO_WHATSAPP);
+        return;
+      }
+      answers.nome = nome;
+      answers.whatsapp = wa;
+      answers.cidade_uf = cidade;
+
+      var payload = buildPayload();
+      payload.website = hpEl ? hpEl.value : "";
+
+      btnRetorno.disabled = true;
+      btnRetorno.textContent = "Enviando...";
+
+      sendLeadToCrm(payload).then(function (result) {
+        if (result.ok) {
+          leadAlreadySent = true;
+          revealConfirmation(payload);
+          pushEvent("stories_form_submit", payloadSemPii(payload));
+          return;
+        }
+        btnRetorno.disabled = false;
+        btnRetorno.textContent = "Pedir retorno no WhatsApp";
+        showFormError(FORM_ERRO_CRM);
+        btnWaFallback.classList.remove("hidden");
+        btnWaFallback.classList.add("is-highlight");
+        btnWaFallback.setAttribute("href", waHref(true));
+        btnWaFallback.focus();
+      });
     });
+
+    (function setupPrivacyModal() {
+      var modal = document.getElementById("privacy-modal");
+      var lastFocus = null;
+      function openPrivacy(e) {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        lastFocus = document.activeElement;
+        modal.hidden = false;
+        modal.classList.add("is-open");
+        var closeBtn = modal.querySelector(".privacy-close");
+        if (closeBtn) closeBtn.focus();
+      }
+      function closePrivacy(e) {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        modal.classList.remove("is-open");
+        modal.hidden = true;
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+      }
+      document.querySelectorAll("[data-open-privacy]").forEach(function (el) {
+        el.addEventListener("click", openPrivacy);
+      });
+      modal.querySelectorAll("[data-close-privacy]").forEach(function (el) {
+        el.addEventListener("click", closePrivacy);
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && modal.classList.contains("is-open")) closePrivacy(e);
+      });
+    })();
 
     var bgMusic = document.getElementById("bgMusic");
     var btnSound = document.getElementById("btn-sound");
@@ -822,10 +1025,16 @@
     var UNLOCK_EVENTS = ["pointerdown", "touchstart", "touchend", "click", "keydown"];
 
     function updateSoundButton() {
-      var playing = musicStarted && !userMuted && bgMusic && !bgMusic.paused;
+      var playing = !!(musicStarted && !userMuted && bgMusic && !bgMusic.paused);
       btnSound.classList.toggle("is-on", playing);
       btnSound.setAttribute("aria-pressed", playing ? "true" : "false");
       btnSound.setAttribute("title", playing ? "Silenciar música" : "Ativar música");
+      btnSound.setAttribute("aria-label", playing ? "Silenciar música" : "Ativar música");
+    }
+    if (bgMusic) {
+      ["play", "playing", "pause", "ended"].forEach(function (evt) {
+        bgMusic.addEventListener(evt, updateSoundButton);
+      });
     }
 
     function fadeTo(target, ms, done) {
